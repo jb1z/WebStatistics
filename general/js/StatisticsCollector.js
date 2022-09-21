@@ -20,7 +20,7 @@ class StatisticsCollector{
     }
 
     #updateAvgTimeOnButtons(timeInterval){
-        this.#avgMouseOnButtonTime+=timeInterval;
+        this.#sumOfMouseOnButtonTime+=timeInterval;
         this.#avgMouseOnButtonTime = this.#sumOfMouseOnButtonTime / this.#countTimesOnButton;
     }
 
@@ -72,10 +72,10 @@ class StatisticsCollector{
         'Average time between two clicks: ' + this.#avgButtonClickTime + '\n' +
         'Max. time between two clicks: ' + this.#maxButtonClickTime + '\n' +
         'Min. time between two clicks: ' + this.#minButtonClickTime + '\n' +
-        'Total amount of being on buttons: ' + this.#countClicks + '\n' +
-        'Average time on buttons: ' + this.#avgButtonClickTime + '\n' +
-        'Max. time on buttons: ' + this.#maxButtonClickTime + '\n' +
-        'Min. time on buttons: ' + this.#minButtonClickTime + '\n' +
+        'Total amount of being on buttons: ' + this.#countTimesOnButton + '\n' +
+        'Average time on buttons: ' + this.#avgMouseOnButtonTime + '\n' +
+        'Max. time on buttons: ' + this.#maxMouseOnButtonTime + '\n' +
+        'Min. time on buttons: ' + this.#minMouseOnButtonTime + '\n' +
         'Taps on keys: ' + this.#countTapsOnKeys;
     }
 }

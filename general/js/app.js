@@ -42,13 +42,13 @@ function handleMouseEnter(event){
     intervalOnButton = setInterval(startTimerOnButton, 10);
 }
 function handleMouseLeave(event){
-    stopTimerOnButton(intervalOnButton);
-    statistics.takeTimeIntervalsOnButtons(milliSecondsOnButton);
     statistics.incrementCountOnButtons();
+    statistics.takeTimeIntervalsOnButtons(milliSecondsOnButton);
+    stopTimerOnButton(intervalOnButton);
 }
 
 function handleMouseClick(event){
-    if(event.target.tagName !== 'BUTTON') return;
+    // if(event.target.tagName !== 'BUTTON') return;
     timerStartStop = !timerStartStop;
     statistics.incrementClicks();
     if (timerStartStop) {
@@ -58,7 +58,7 @@ function handleMouseClick(event){
         stopTimer(interval);
         timerStopMillis = milliSeconds;
         statistics.takeTimeIntervalClicks(timerStopMillis);
-        statistics.displayStatistics();
+        // statistics.displayStatistics();
         milliSeconds = 0;
         interval = setInterval(startTimer, 10);
         timerStartStop = !timerStartStop;
