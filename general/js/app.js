@@ -1,6 +1,8 @@
 'use strict';
 const milliElement = document.querySelector('.milliseconds');
+const milliElementOnButton = document.querySelector('.milliseconds1');
 let milliSeconds = 0, interval;
+let milliSecondsOnButton = 0, intervalOnButton;
 let timerStartStop = false;
 let timerStopMillis = 0;
 
@@ -19,10 +21,30 @@ function stopTimer(interval){
     clearInterval(interval);
 }
 
+function startTimerOnButton(){
+    milliSecondsOnButton++;
+    if(milliSecondsOnButton < 9){
+        milliElementOnButton.innerText = "0" + milliSecondsOnButton;
+    } else {
+        milliElementOnButton.innerText = milliSecondsOnButton;
+    }
+}
+
+function stopTimerOnButton(interval){
+    clearInterval(interval);
+    milliSecondsOnButton = 0;
+    milliElementOnButton.innerText = "00";
+}
+
 const wrapper = document.querySelector('.wrapper');
 
 function handleMouseEnter(event){
-    console.log('214124', event.target);
+    intervalOnButton = setInterval(startTimerOnButton, 10);
+}
+function handleMouseLeave(event){
+    stopTimerOnButton(intervalOnButton);
+    statistics.takeTimeIntervalsOnButtons(milliSecondsOnButton);
+    statistics.incrementCountOnButtons();
 }
 
 function handleMouseClick(event){
@@ -35,7 +57,7 @@ function handleMouseClick(event){
     } else {
         stopTimer(interval);
         timerStopMillis = milliSeconds;
-        statistics.takeTimeInterval(timerStopMillis);
+        statistics.takeTimeIntervalClicks(timerStopMillis);
         statistics.displayStatistics();
         milliSeconds = 0;
         interval = setInterval(startTimer, 10);
@@ -43,9 +65,17 @@ function handleMouseClick(event){
     }
 }
 
-wrapper.addEventListener('mouseenter', handleMouseEnter);
-wrapper.addEventListener('click', handleMouseClick);
-
 document.onkeydown = function (event){
+    statistics.incrementKeyTaps();
     console.log(event);
 }
+
+wrapper.addEventListener('mouseenter', handleMouseEnter);
+wrapper.addEventListener('mouseleave', handleMouseLeave);
+wrapper.addEventListener('click', handleMouseClick);
+
+const statsButton = document.querySelector('#statsButton');
+const stats = document.querySelector('#stats');
+statsButton.addEventListener('click', function(){
+    stats.innerText = statistics.displayStatistics();
+});
