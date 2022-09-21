@@ -2,7 +2,6 @@
 const milliElement = document.querySelector('.milliseconds');
 let milliSeconds = 0, interval;
 let timerStartStop = false;
-let timerStartMillis = 0;
 let timerStopMillis = 0;
 
 const statistics = new StatisticsCollector();
@@ -20,18 +19,33 @@ function stopTimer(interval){
     clearInterval(interval);
 }
 
-document.addEventListener('click', function(event){
+const wrapper = document.querySelector('.wrapper');
+
+function handleMouseEnter(event){
+    console.log('214124', event.target);
+}
+
+function handleMouseClick(event){
     if(event.target.tagName !== 'BUTTON') return;
     timerStartStop = !timerStartStop;
+    statistics.incrementClicks();
     if (timerStartStop) {
+        milliSeconds = 0;
         interval = setInterval(startTimer, 10);
-        timerStartMillis = milliSeconds;
     } else {
         stopTimer(interval);
         timerStopMillis = milliSeconds;
-        statistics.takeTimeInterval(timerStopMillis - timerStartMillis);
-        // console.log('start ' + timerStartMillis + ' end ' + timerStopMillis);
+        statistics.takeTimeInterval(timerStopMillis);
         statistics.displayStatistics();
+        milliSeconds = 0;
+        interval = setInterval(startTimer, 10);
+        timerStartStop = !timerStartStop;
     }
-    statistics.incrementClicks();
-});
+}
+
+wrapper.addEventListener('mouseenter', handleMouseEnter);
+wrapper.addEventListener('click', handleMouseClick);
+
+document.onkeydown = function (event){
+    console.log(event);
+}

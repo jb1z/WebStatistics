@@ -7,7 +7,7 @@ class StatisticsCollector{
 
     #updateAvgTime(timeInterval){
         this.#sumOfTimeIntervals+=timeInterval;
-        this.#avgButtonClickTime = this.#sumOfTimeIntervals / this.#countClicks;
+        this.#avgButtonClickTime = this.#sumOfTimeIntervals / (this.#countClicks - 1);
     }
 
     incrementClicks() {
