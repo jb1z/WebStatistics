@@ -48,7 +48,11 @@ body {
     top: 125px;
     left: 320px;
 }
-
+.timer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 ul {
     font-family: helvetica, serif;
 }
