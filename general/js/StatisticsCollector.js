@@ -19,6 +19,8 @@ class StatisticsCollector{
     #countTapsOnKeys = 0;
     #countTapIntervals = 0;
 
+    #stats = document.querySelector('#stats');
+
     #updateAvgTimeClicks(timeInterval){
         this.#sumOfTimeIntervals+=timeInterval;
         this.#avgButtonClickTime = this.#sumOfTimeIntervals / (this.#countClicks - 1);
@@ -34,12 +36,15 @@ class StatisticsCollector{
 
     incrementClicks() {
         this.#countClicks++;
+        stats.innerText = statistics.displayStatistics();
     }
     incrementCountOnButtons(){
         this.#countTimesOnButton++;
+        stats.innerText = statistics.displayStatistics();
     }
     incrementKeyTaps(){
         this.#countTapsOnKeys++;
+        stats.innerText = statistics.displayStatistics();
     }
     incrementTapIntervals(){
         this.#countTapIntervals++;

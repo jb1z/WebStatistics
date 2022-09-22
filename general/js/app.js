@@ -118,10 +118,3 @@ document.onkeydown = function (event){
 wrapper.addEventListener('mouseenter', handleMouseEnter);
 wrapper.addEventListener('mouseleave', handleMouseLeave);
 wrapper.addEventListener('click', handleMouseClick);
-
-// stats button
-const statsButton = document.querySelector('#statsButton');
-const stats = document.querySelector('#stats');
-statsButton.addEventListener('click', function(){
-    stats.innerText = statistics.displayStatistics();
-});
