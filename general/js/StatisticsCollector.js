@@ -5,16 +5,12 @@ class StatisticsCollector{
     #avgButtonClickTime = 0;
     #sumOfTimeIntervals = 0;
     #countClicks = 0;
-
-    statisticsClick = new StatsKeyboard();
     // moving on buttons statistics
     #minMouseOnButtonTime = Number.MAX_SAFE_INTEGER;
     #maxMouseOnButtonTime = 0;
     #avgMouseOnButtonTime = 0;
     #sumOfMouseOnButtonTime = 0;
     #countTimesOnButton = 0;
-
-    statisticsOnButton = new StatsOnButton();
     // keyboard statistics
     #minTapsPerSecond = Number.MAX_SAFE_INTEGER;
     #maxTapsPerSecond = 0;
@@ -22,8 +18,6 @@ class StatisticsCollector{
     #sumTapsPerSecond = 0;
     #countTapsOnKeys = 0;
     #countTapIntervals = 0;
-
-    statisticsKeyboard = new StatsKeyboard();
 
     #updateAvgTimeClicks(timeInterval){
         this.#sumOfTimeIntervals+=timeInterval;
