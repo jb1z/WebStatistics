@@ -41,30 +41,32 @@ body {
     top: 20px;
     left: 100px;
 }
-
 #button2{
     position: absolute;
     top: 20px;
     left: 200px;
 }
-
 #button3{
     position: absolute;
     top: 20px;
     left: 300px;
 }
-
 #button4{
     position: absolute;
     top: 100px;
     left: 150px;
 }
-
 #button5{
     position: absolute;
     top: 100px;
     left: 250px;
 }
+#button6{
+    position: absolute;
+    top: 180px;
+    left: 200px;
+}
+
 .timer {
     display: flex;
     justify-content: space-between;
