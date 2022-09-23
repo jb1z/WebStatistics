@@ -36,15 +36,13 @@ class StatisticsCollector{
 
     incrementClicks() {
         this.#countClicks++;
-        stats.innerText = statistics.displayStatistics();
     }
     incrementCountOnButtons(){
         this.#countTimesOnButton++;
-        stats.innerText = statistics.displayStatistics();
     }
     incrementKeyTaps(){
         this.#countTapsOnKeys++;
-        stats.innerText = statistics.displayStatistics();
+        statistics.displayStatistics();
     }
     incrementTapIntervals(){
         this.#countTapIntervals++;
@@ -60,6 +58,7 @@ class StatisticsCollector{
             this.#minButtonClickTime = timeInterval;
         }
         this.#updateAvgTimeClicks(timeInterval);
+        statistics.displayStatistics();
     }
     takeTimeIntervalsOnButtons(timeInterval){
         if (timeInterval > this.#maxMouseOnButtonTime){
@@ -69,6 +68,7 @@ class StatisticsCollector{
             this.#minMouseOnButtonTime = timeInterval;
         }
         this.#updateAvgTimeOnButtons(timeInterval);
+        statistics.displayStatistics();
     }
     takeTapsPerSecondKeyboard(tapsPerSecond) {
         if(tapsPerSecond > this.#maxTapsPerSecond){
@@ -85,7 +85,7 @@ class StatisticsCollector{
     }
 
     displayStatistics(){
-        return 'Click statistics:\n' +
+        this.#stats.innerText = 'Click statistics:\n' +
             'Average time between two clicks: ' + this.#avgButtonClickTime.toFixed(2) + '\n' +
             'Max. time between two clicks: ' + this.#maxButtonClickTime + '\n' +
             'Min. time between two clicks: ' + this.#minButtonClickTime + '\n' +
