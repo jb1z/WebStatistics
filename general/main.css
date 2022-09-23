@@ -72,32 +72,10 @@ body {
     justify-content: space-between;
     align-items: center;
 }
-ul {
-    font-family: helvetica, serif;
-}
 
-li{
-    list-style: circle;
-}
-
-.list{
-    list-style: square;
-}
-
-.light-theme{
+.main-theme{
     --bg: var(--green);
     --fontColor: var(--black);
     --btnFontColor: var(--white);
     --btnBg: var(--black);
-}
-
-.dark-theme{
-    --bg: var(--black);
-    --fontColor: var(--green);
-    --btnFontColor: var(--black);
-    --btnBg: var(--white);
-}
-
-#msg {
-    font-family: monospace;
 }
