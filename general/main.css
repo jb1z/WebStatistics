@@ -1,5 +1,5 @@
 :root {
-    --green: #00FF00;
+    --green: #E6F4FF;
     --white: #FFFFFF;
     --black: #000000;
 }
@@ -21,10 +21,49 @@ body {
     left: 200px;
 }
 
-#stats{
+#stats {
     position: absolute;
-    top: 20px;
+    top: 125px;
     left: 400px;
+}
+
+#behaviourClick {
+    position: absolute;
+    top: 125px;
+    left: 560px;
+}
+
+#behaviourClickDistance {
+    position: absolute;
+    top: 235px;
+    left: 660px;
+}
+
+#behaviourOnButton {
+    position: absolute;
+    top: 327px;
+    left: 550px;
+}
+
+#behaviourKeyboard {
+    position: absolute;
+    top: 438px;
+    left: 550px;
+}
+
+.report {
+    font-family: "Calisto MT", ui-monospace;
+    font-weight: bold;
+    position: absolute;
+    top: 550px;
+    left: 400px;
+}
+
+#reportBotHuman {
+    position: absolute;
+    top: 0;
+    left: 150px;
+    color: red;
 }
 
 .buttons {
@@ -39,65 +78,67 @@ body {
 #button1{
     position: absolute;
     top: 20px;
-    left: 100px;
+    left: 20px;
 }
 #button2{
     position: absolute;
     top: 20px;
-    left: 200px;
+    left: 120px;
 }
 #button3{
     position: absolute;
     top: 20px;
-    left: 300px;
+    left: 220px;
 }
 #button4{
     position: absolute;
     top: 100px;
-    left: 150px;
+    left: 70px;
 }
 #button5{
     position: absolute;
     top: 100px;
-    left: 250px;
+    left: 170px;
 }
 #button6{
     position: absolute;
     top: 180px;
-    left: 200px;
+    left: 120px;
 }
 
-.timer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-ul {
-    font-family: helvetica, serif;
+.timer_block {
+    position: absolute;
+    top: 20px;
+    left: 400px;
 }
 
-li{
-    list-style: circle;
+#timerClick {
+    position: absolute;
+    top: 1px;
+    left: 275px;
 }
 
-.list{
-    list-style: square;
+#timerOnButton {
+    position: absolute;
+    top: 19px;
+    left: 160px;
 }
 
-.light-theme{
+#timerKeyboard {
+    position: absolute;
+    top: 38px;
+    left: 192px;
+}
+
+#timerClickDistance {
+    position: absolute;
+    top: 56px;
+    left: 290px;
+}
+
+.main-theme{
     --bg: var(--green);
     --fontColor: var(--black);
     --btnFontColor: var(--white);
     --btnBg: var(--black);
-}
-
-.dark-theme{
-    --bg: var(--black);
-    --fontColor: var(--green);
-    --btnFontColor: var(--black);
-    --btnBg: var(--white);
-}
-
-#msg {
-    font-family: monospace;
 }

@@ -5,21 +5,25 @@
         <title>Title</title>
         <link rel="stylesheet" href="main.css">
     </head>
-    <body class="light-theme">
-        <div class="container">
-            <div class="timer">
+    <body class="main-theme">
                 <div class="timer_block">
-                    <div class="milliseconds">
-                        00
+                    <div class="msClick">
+                        <div id="titleTimerClick">Timer between two button clicks (ms): </div>
+                        <div id="timerClick">00</div>
                     </div>
-                    <div class="milliseconds1">
-                        00
+                    <div class="msOnButton">
+                        <div id="titleOnButton">Timer on button (ms): </div>
+                        <div id="timerOnButton">00</div>
                     </div>
-                    <div class="milliseconds2">
-                        00
+                    <div class="msKeyboard">
+                        <div id="titleKeyboard">Timer keyboard taps (ms): </div>
+                        <div id="timerKeyboard">00</div>
+                    </div>
+                    <div class="msClickDistance">
+                        <div id="titleClickDistance">Timer distance between two clicks (ms): </div>
+                        <div id="timerClickDistance">00</div>
                     </div>
                 </div>
-            </div>
             <div class="wrapper">
                 <button class="buttons" id="button1">First</button>
                 <button class="buttons" id="button2">Second</button>
@@ -28,12 +32,17 @@
                 <button class="buttons" id="button5">Fifth</button>
                 <button class="buttons" id="button6">Sixth</button>
             </div>
-        </div>
-        <button id="statsButton">
-            Display statistics
-        </button>
-        <div id="stats">
-        </div>
+                <div id="behaviourClick"></div>
+                <div id="behaviourClickDistance"></div>
+                <div id="behaviourOnButton"></div>
+                <div id="behaviourKeyboard"></div>
+                <div id="stats">
+                    Statistics will display below:
+                </div>
+                <div class="report">
+                    <div id="reportTitle">You are most likely: </div>
+                    <div id="reportBotHuman">Bot</div>
+                </div>
         <script src="js/StatisticsCollector.js"></script>
         <script src="js/app.js"></script>
     </body>
