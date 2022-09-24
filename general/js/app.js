@@ -1,9 +1,9 @@
 'use strict';
 // timers visualization
-const milliElementClick = document.querySelector('.msClick');
-const milliElementOnButton = document.querySelector('.msOnButton');
-const milliElementKeyboard = document.querySelector('.msKeyboard');
-const milliElementClickDistance = document.querySelector('.msClickDistance');
+const milliElementClick = document.querySelector('#timerClick');
+const milliElementOnButton = document.querySelector('#timerOnButton');
+const milliElementKeyboard = document.querySelector('#timerKeyboard');
+const milliElementClickDistance = document.querySelector('#timerClickDistance');
 // html block - wrapper (with buttons)
 const wrapper = document.querySelector('.wrapper');
 // time counters & intervals for timers for each event
@@ -142,7 +142,7 @@ document.addEventListener('click', (event) => {
     if (timerStartStopClickDistance) {
         firstClickX = event.pageX;
         firstClickY = event.pageY;
-        intervalClickDistance = setInterval(startTimerClickDistance, 100);
+        intervalClickDistance = setInterval(startTimerClickDistance, 10);
         timerStartStopClickDistance = false;
     } else {
         secondClickX = event.pageX;

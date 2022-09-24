@@ -1,3 +1,46 @@
+// page elements
+const behaviorClicksElement = document.querySelector('#behaviourClick');
+const behaviorOnButtonElement = document.querySelector('#behaviourOnButton');
+const behaviorKeyboardElement = document.querySelector('#behaviourKeyboard');
+// behavior enumeration
+const Behaviour = {BOT: 'bot', HUMAN: 'human', SUSPICIOUS: 'suspicious behavior'};
+// Class for defining behavior based on different types of stats
+class behaviourDefiner {
+    #botPoints = 0;
+    #humanPoints = 0;
+    #suspiciousPoints = 0;
+    #definer = Behaviour.SUSPICIOUS;
+
+    incrementBotPoints() {
+        this.#botPoints++;
+        console.log('Bot points ' + this.#botPoints);
+        this.refreshBehavior();
+    }
+    incrementHumanPoints() {
+        this.#humanPoints++;
+        console.log('Human points ' + this.#humanPoints);
+        this.refreshBehavior();
+    }
+    incrementSuspiciousPoints() {
+        this.#suspiciousPoints++;
+        console.log('Suspicious points ' + this.#suspiciousPoints);
+        this.refreshBehavior();
+    }
+
+    getDefiner() {
+        return this.#definer;
+    }
+
+    refreshBehavior() {
+        if (this.#botPoints > this.#humanPoints) {
+            this.#definer = this.#botPoints > this.#suspiciousPoints ? Behaviour.BOT : Behaviour.SUSPICIOUS;
+        } else {
+            this.#definer = this.#humanPoints > this.#suspiciousPoints ? Behaviour.HUMAN : Behaviour.SUSPICIOUS;
+        }
+    }
+}
+
+// Stats collector class
 class StatisticsCollector{
     // button click statistics
     #minButtonClickTime = Number.MAX_SAFE_INTEGER; // time between two clicks
@@ -24,6 +67,10 @@ class StatisticsCollector{
     #sumTapsPerSecond = 0;
     #countTapsOnKeys = 0;
     #countTapsIntervals = 0;
+    // behavior definer
+    #definerClicks = new behaviourDefiner();
+    #definerOnButton = new behaviourDefiner();
+    #definerKeyboard = new behaviourDefiner();
 
     #stats = document.querySelector('#stats');
 
@@ -68,6 +115,16 @@ class StatisticsCollector{
             this.#minButtonClickTime = timeInterval;
         }
         this.#updateAvgTimeClicks(timeInterval);
+        // behavior based on all click stats
+        let ratioClicks = (this.#avgButtonClickTime + this.#maxButtonClickTime / 100 + this.#minButtonClickTime) /
+                    this.#countClicks;
+        if (ratioClicks <= 0.15) {
+            this.#definerClicks.incrementBotPoints();
+        } else if (ratioClicks <= 0.8) {
+            this.#definerClicks.incrementSuspiciousPoints();
+        } else {
+            this.#definerClicks.incrementHumanPoints();
+        }
         statistics.displayStatistics();
     }
     takeTimeIntervalsOnButtons(timeInterval){
@@ -78,6 +135,15 @@ class StatisticsCollector{
             this.#minMouseOnButtonTime = timeInterval;
         }
         this.#updateAvgTimeOnButtons(timeInterval);
+        // behavior is based on average and minimal time on button
+        if (Math.abs((this.#avgMouseOnButtonTime / 10) - this.#minMouseOnButtonTime) <= 0.5) {
+            this.#definerOnButton.incrementBotPoints();
+        } else if (Math.abs((this.#avgMouseOnButtonTime / 10) - this.#minMouseOnButtonTime) <= 2.5) {
+            this.#definerOnButton.incrementSuspiciousPoints();
+        } else {
+            this.#definerOnButton.incrementHumanPoints();
+        }
+        console.log(Math.abs((this.#avgMouseOnButtonTime / 10) - this.#minMouseOnButtonTime));
         statistics.displayStatistics();
     }
     takeTapsPerSecondKeyboard(tapsPerSecond) {
@@ -88,6 +154,14 @@ class StatisticsCollector{
             this.#minTapsPerSecond = tapsPerSecond;
         }
         this.#updateAvgTapsPerSecond(tapsPerSecond);
+        // behavior is based on taps per second
+        if (tapsPerSecond >= 40) {
+            this.#definerKeyboard.incrementBotPoints();
+        } else if (tapsPerSecond >= 20) {
+            this.#definerKeyboard.incrementSuspiciousPoints();
+        } else {
+            this.#definerKeyboard.incrementHumanPoints();
+        }
     }
     takeClicksCoordsTime(x_1, y_1, x_2, y_2, timeInterval) {
         let distance;
@@ -98,21 +172,44 @@ class StatisticsCollector{
             distance = 1;
         }
         indexTimeDistance = timeInterval / distance;
-        this.#countIndexValue++;
-        if (indexTimeDistance > this.#maxIndexValue) {
-            this.#maxIndexValue = indexTimeDistance;
+        if (indexTimeDistance < 10) {
+            this.#countIndexValue++;
+            if (indexTimeDistance > this.#maxIndexValue) {
+                this.#maxIndexValue = indexTimeDistance;
+            }
+            if (indexTimeDistance < this.#minIndexValue) {
+                this.#minIndexValue = indexTimeDistance;
+            }
+            this.#updateAvgIndexValue(indexTimeDistance);
+            // behavior is based on
         }
-        if (indexTimeDistance < this.#minIndexValue) {
-            this.#minIndexValue = indexTimeDistance;
-        }
-        this.#updateAvgIndexValue(indexTimeDistance);
+    }
+
+    stopCurrentSession() {
+
     }
 
     getCountTapsOnKeys() {
         return this.#countTapsOnKeys;
     }
 
+    #setBehaviorTextColor(behaviorElement, definer) {
+        behaviorElement.innerText = definer;
+        if (definer === Behaviour.BOT) {
+            behaviorElement.style.color = '#DE2700';
+        }
+        if (definer === Behaviour.SUSPICIOUS){
+            behaviorElement.style.color = '#FFC103';
+        }
+        if (definer === Behaviour.HUMAN){
+            behaviorElement.style.color = '#42D000';
+        }
+    }
+
     displayStatistics(){
+        this.#setBehaviorTextColor(behaviorClicksElement, this.#definerClicks.getDefiner());
+        this.#setBehaviorTextColor(behaviorOnButtonElement, this.#definerOnButton.getDefiner());
+        this.#setBehaviorTextColor(behaviorKeyboardElement, this.#definerKeyboard.getDefiner());
         this.#stats.innerText = 'Click button statistics:\n' +
             'Average time between two clicks: ' + this.#avgButtonClickTime.toFixed(2) + '\n' +
             'Max. time between two clicks: ' + this.#maxButtonClickTime + '\n' +
