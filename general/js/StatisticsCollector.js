@@ -185,7 +185,7 @@ class StatisticsCollector{
         }
     }
 
-    stopCurrentSession() {
+    refreshSession() {
 
     }
 
