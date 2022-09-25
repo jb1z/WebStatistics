@@ -29,7 +29,14 @@ class behaviourDefiner {
         this.refreshBehavior();
     }
 
-    getDefiner() {
+    resetBehaviorDefiner() {
+        this.#botPoints = 0;
+        this.#humanPoints = 0;
+        this.#suspiciousPoints = 0;
+        this.#definer = Behaviour.UNDEFINED;
+    }
+
+    getBehaviorDefiner() {
         return this.#definer;
     }
 
@@ -203,14 +210,45 @@ class StatisticsCollector{
         }
     }
 
-    refreshSession() {
-        this.#qualifyDefinerType(this.#definerClicks.getDefiner());
-        this.#qualifyDefinerType(this.#definerIndex.getDefiner());
-        this.#qualifyDefinerType(this.#definerOnButton.getDefiner());
-        this.#qualifyDefinerType(this.#definerKeyboard.getDefiner());
-        // clear all!
+    #refreshAllFields() {
+        // button click statistics
+        this.#minButtonClickTime = Number.MAX_SAFE_INTEGER; // time between two clicks
+        this.#maxButtonClickTime = 0;
+        this.#avgButtonClickTime = 0;
+        this.#sumButtonClickTime = 0;
+        this.#countClicks = 0;
+        // time&distance (index) between two clicks
+        this.#minIndexValue = Number.MAX_SAFE_INTEGER;
+        this.#maxIndexValue = 0;
+        this.#avgIndexValue = 0;
+        this.#sumIndexValue = 0;
+        this.#countIndexValue = 0;
+        // moving on buttons statistics
+        this.#minMouseOnButtonTime = Number.MAX_SAFE_INTEGER;
+        this.#maxMouseOnButtonTime = 0;
+        this.#avgMouseOnButtonTime = 0;
+        this.#sumMouseOnButtonTime = 0;
+        this.#countMouseOnButtonTime = 0;
+        // keyboard statistics
+        this.#minTapsPerSecond = Number.MAX_SAFE_INTEGER;
+        this.#maxTapsPerSecond = 0;
+        this.#avgTapsPerSecond = 0;
+        this.#sumTapsPerSecond = 0;
+        this.#countTapsOnKeys = 0;
+        this.#countTapsIntervals = 0;
+        // behavior definer
+        this.#definerClicks.resetBehaviorDefiner();
+        this.#definerOnButton.resetBehaviorDefiner();
+        this.#definerKeyboard.resetBehaviorDefiner();
+        this.#definerIndex.resetBehaviorDefiner();
+    }
 
-        // ---------
+    refreshSession() {
+        this.#qualifyDefinerType(this.#definerClicks.getBehaviorDefiner());
+        this.#qualifyDefinerType(this.#definerIndex.getBehaviorDefiner());
+        this.#qualifyDefinerType(this.#definerOnButton.getBehaviorDefiner());
+        this.#qualifyDefinerType(this.#definerKeyboard.getBehaviorDefiner());
+        this.#refreshAllFields();
         this.#countSessions++;
         behaviorSessionCountElement.innerText = 'Sessions count: ' + this.#countSessions;
         this.displayStatistics();
@@ -237,10 +275,10 @@ class StatisticsCollector{
     }
 
     displayStatistics(){
-        this.#setBehaviorTextColor(behaviorClicksElement, this.#definerClicks.getDefiner());
-        this.#setBehaviorTextColor(behaviorOnButtonElement, this.#definerOnButton.getDefiner());
-        this.#setBehaviorTextColor(behaviorKeyboardElement, this.#definerKeyboard.getDefiner());
-        this.#setBehaviorTextColor(behaviorSessionsElement, this.#definerSessions.getDefiner());
+        this.#setBehaviorTextColor(behaviorClicksElement, this.#definerClicks.getBehaviorDefiner());
+        this.#setBehaviorTextColor(behaviorOnButtonElement, this.#definerOnButton.getBehaviorDefiner());
+        this.#setBehaviorTextColor(behaviorKeyboardElement, this.#definerKeyboard.getBehaviorDefiner());
+        this.#setBehaviorTextColor(behaviorSessionsElement, this.#definerSessions.getBehaviorDefiner());
         this.#stats.innerText = 'Click button statistics:\n' +
             'Average time between two clicks: ' + this.#avgButtonClickTime.toFixed(2) + '\n' +
             'Max. time between two clicks: ' + this.#maxButtonClickTime + '\n' +

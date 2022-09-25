@@ -92,7 +92,19 @@ function startTimerSession() {
         timerStartStopSession = true;
     }
 }
-
+function resetFields() {
+    timerStartStopClick = false;
+    timerStartStopClickDistance = true;
+    timerStartStopOnButton = true;
+    timerStartStopKeyboard = true;
+    timerStartStopSession = true;
+    firstClickX = 0;
+    firstClickY = 0;
+    secondClickX = 0;
+    secondClickY = 0;
+    keyboardStartTaps = 0;
+    keyboardStopTaps = 0;
+}
 // timers stoppers
 function stopTimerClick(interval){
     clearInterval(interval);
@@ -110,11 +122,21 @@ function stopTimerKeyboard(interval){
     milliElementKeyboard.innerText = '00';
     statistics.displayStatistics();
 }
+function stopTimerClickDistance(interval) {
+    clearInterval(interval);
+    msClickDistance = 0;
+    milliElementClickDistance.innerText = '00';
+}
 function stopTimerSession(interval) {
     clearInterval(interval);
     secSession = 0;
     secondElementSession.innerText = '00';
     statistics.refreshSession();
+    resetFields();
+    stopTimerClick(intervalClick);
+    stopTimerClickDistance(intervalClickDistance);
+    stopTimerOnButton(intervalOnButton);
+    stopTimerKeyboard(intervalKeyboard);
 }
 // handler's functions
 function handleMouseEnter(){
