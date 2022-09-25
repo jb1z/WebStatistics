@@ -21,16 +21,24 @@ body {
     left: 200px;
 }
 
-#stats {
+.stats {
     position: absolute;
     top: 125px;
     left: 400px;
+    width: 500px;
+    height: 400px;
+}
+
+.behavior {
+    position: relative;
+    width: 500px;
+    height: 400px;
 }
 
 #behaviourClick {
     position: absolute;
-    top: 125px;
-    left: 560px;
+    top: 117px;
+    left: 547px;
 }
 
 #behaviourClickDistance {
@@ -41,14 +49,14 @@ body {
 
 #behaviourOnButton {
     position: absolute;
-    top: 327px;
-    left: 550px;
+    top: 315px;
+    left: 535px;
 }
 
 #behaviourKeyboard {
     position: absolute;
-    top: 438px;
-    left: 550px;
+    top: 423px;
+    left: 535px;
 }
 
 .sessions {

@@ -85,7 +85,7 @@ class StatisticsCollector{
     // count sessions
     #countSessions = 0;
 
-    #stats = document.querySelector('#stats');
+    #stats = document.querySelector('.stats');
 
     #updateAvgTimeClicks(timeInterval){
         this.#sumButtonClickTime+=timeInterval;
