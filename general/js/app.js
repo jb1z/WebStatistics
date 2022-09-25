@@ -212,7 +212,6 @@ document.addEventListener('click', (event) => {
         msClickDistance = 0;
         milliElementClickDistance.innerText = '00';
     }
-    console.log(event.pageX + ' ' + event.pageY);
 })
 
 // link functions with events

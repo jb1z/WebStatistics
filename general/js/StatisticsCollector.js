@@ -1,9 +1,13 @@
 // page elements
 const behaviorClicksElement = document.querySelector('#behaviourClick');
+const behaviorIndexValue = document.querySelector('#behaviourClickDistance');
 const behaviorOnButtonElement = document.querySelector('#behaviourOnButton');
 const behaviorKeyboardElement = document.querySelector('#behaviourKeyboard');
 const behaviorSessionsElement = document.querySelector('#behaviorSessions');
 const behaviorSessionCountElement = document.querySelector('#behaviorSessionsCount');
+const behaviorHumanPointElement = document.querySelector('#behaviorHumanPoints');
+const behaviorSuspiciousPointElement = document.querySelector('#behaviorSuspiciousPoints');
+const behaviorBotPointElement = document.querySelector('#behaviorBotPoints');
 // behavior enumeration
 const Behaviour = {BOT: 'bot', HUMAN: 'human', SUSPICIOUS: 'suspicious behavior', UNDEFINED: 'undefined'};
 // Class for defining behavior based on different types of stats
@@ -15,17 +19,14 @@ class behaviourDefiner {
 
     incrementBotPoints() {
         this.#botPoints++;
-        console.log('Bot points ' + this.#botPoints);
         this.refreshBehavior();
     }
     incrementHumanPoints() {
         this.#humanPoints++;
-        console.log('Human points ' + this.#humanPoints);
         this.refreshBehavior();
     }
     incrementSuspiciousPoints() {
         this.#suspiciousPoints++;
-        console.log('Suspicious points ' + this.#suspiciousPoints);
         this.refreshBehavior();
     }
 
@@ -38,6 +39,17 @@ class behaviourDefiner {
 
     getBehaviorDefiner() {
         return this.#definer;
+    }
+
+
+    getBotPoints() {
+        return this.#botPoints;
+    }
+    getHumanPoints() {
+        return this.#humanPoints;
+    }
+    getSuspiciousPoints() {
+        return this.#suspiciousPoints;
     }
 
     refreshBehavior() {
@@ -133,7 +145,7 @@ class StatisticsCollector{
                     this.#countClicks;
         if (ratioClicks <= 0.15) {
             this.#definerClicks.incrementBotPoints();
-        } else if (ratioClicks <= 0.8) {
+        } else if (ratioClicks <= 1.1) {
             this.#definerClicks.incrementSuspiciousPoints();
         } else {
             this.#definerClicks.incrementHumanPoints();
@@ -148,10 +160,12 @@ class StatisticsCollector{
             this.#minMouseOnButtonTime = timeInterval;
         }
         this.#updateAvgTimeOnButtons(timeInterval);
+        let ratioOnButton = Math.abs((this.#avgMouseOnButtonTime / 10) - this.#minMouseOnButtonTime) +
+            this.#maxMouseOnButtonTime / 200;
         // behavior is based on average and minimal time on button
-        if (Math.abs((this.#avgMouseOnButtonTime / 10) - this.#minMouseOnButtonTime) <= 0.5) {
+        if (ratioOnButton <= 0.1) {
             this.#definerOnButton.incrementBotPoints();
-        } else if (Math.abs((this.#avgMouseOnButtonTime / 10) - this.#minMouseOnButtonTime) <= 2.5) {
+        } else if (ratioOnButton <= 1) {
             this.#definerOnButton.incrementSuspiciousPoints();
         } else {
             this.#definerOnButton.incrementHumanPoints();
@@ -167,7 +181,7 @@ class StatisticsCollector{
         }
         this.#updateAvgTapsPerSecond(tapsPerSecond);
         // behavior is based on taps per second
-        if (tapsPerSecond >= 40) {
+        if (tapsPerSecond >= 60) {
             this.#definerKeyboard.incrementBotPoints();
         } else if (tapsPerSecond >= 20) {
             this.#definerKeyboard.incrementSuspiciousPoints();
@@ -192,7 +206,14 @@ class StatisticsCollector{
                 this.#minIndexValue = indexTimeDistance;
             }
             this.#updateAvgIndexValue(indexTimeDistance);
-            // behavior is based on
+            // behavior is based on distance&time between two clicks
+            if (indexTimeDistance <= 0.01) {
+                this.#definerIndex.incrementBotPoints();
+            } else if (indexTimeDistance <= 0.085) {
+                this.#definerIndex.incrementSuspiciousPoints();
+            } else {
+                this.#definerIndex.incrementHumanPoints();
+            }
         }
     }
 
@@ -264,7 +285,7 @@ class StatisticsCollector{
             behaviorElement.style.color = '#DE2700';
         }
         if (definer === Behaviour.SUSPICIOUS) {
-            behaviorElement.style.color = '#FFC103';
+            behaviorElement.style.color = '#FF8C00';
         }
         if (definer === Behaviour.HUMAN) {
             behaviorElement.style.color = '#42D000';
@@ -274,11 +295,15 @@ class StatisticsCollector{
         }
     }
 
-    displayStatistics(){
+    displayStatistics() {
         this.#setBehaviorTextColor(behaviorClicksElement, this.#definerClicks.getBehaviorDefiner());
+        this.#setBehaviorTextColor(behaviorIndexValue, this.#definerIndex.getBehaviorDefiner());
         this.#setBehaviorTextColor(behaviorOnButtonElement, this.#definerOnButton.getBehaviorDefiner());
         this.#setBehaviorTextColor(behaviorKeyboardElement, this.#definerKeyboard.getBehaviorDefiner());
         this.#setBehaviorTextColor(behaviorSessionsElement, this.#definerSessions.getBehaviorDefiner());
+        behaviorHumanPointElement.innerText = 'Human points: ' + this.#definerSessions.getHumanPoints();
+        behaviorSuspiciousPointElement.innerText = 'Suspicious points: ' + this.#definerSessions.getSuspiciousPoints();
+        behaviorBotPointElement.innerText = 'Bot points: ' + this.#definerSessions.getBotPoints();
         this.#stats.innerText = 'Click button statistics:\n' +
             'Average time between two clicks: ' + this.#avgButtonClickTime.toFixed(2) + '\n' +
             'Max. time between two clicks: ' + this.#maxButtonClickTime + '\n' +

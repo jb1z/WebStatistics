@@ -37,24 +37,28 @@ body {
 
 #behaviourClick {
     position: absolute;
+    width: 150px;
     top: 117px;
     left: 547px;
 }
 
 #behaviourClickDistance {
     position: absolute;
-    top: 235px;
-    left: 660px;
+    width: 150px;
+    top: 225px;
+    left: 653px;
 }
 
 #behaviourOnButton {
     position: absolute;
+    width: 150px;
     top: 315px;
     left: 535px;
 }
 
 #behaviourKeyboard {
     position: absolute;
+    width: 150px;
     top: 423px;
     left: 535px;
 }
@@ -69,6 +73,7 @@ body {
 
 #behaviorSessions {
     position: absolute;
+    width: 150px;
     top: 0;
     left: 150px;
 }
