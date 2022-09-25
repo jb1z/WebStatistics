@@ -4,6 +4,7 @@ const milliElementClick = document.querySelector('#timerClick');
 const milliElementOnButton = document.querySelector('#timerOnButton');
 const milliElementKeyboard = document.querySelector('#timerKeyboard');
 const milliElementClickDistance = document.querySelector('#timerClickDistance');
+const secondElementSession = document.querySelector('#timerSession');
 // html block - wrapper (with buttons)
 const wrapper = document.querySelector('.wrapper');
 // time counters & intervals for timers for each event
@@ -11,6 +12,7 @@ let msClick = 0, intervalClick;
 let msClickDistance = 0, intervalClickDistance;
 let msOnButton = 0, intervalOnButton;
 let msOnKeyboard = 0, intervalKeyboard;
+let secSession = 0, intervalSession;
 // coordinates of clicks
 let firstClickX = 0;
 let firstClickY = 0;
@@ -21,6 +23,7 @@ let timerStartStopClick = false;
 let timerStartStopClickDistance = true;
 let timerStartStopOnButton = true;
 let timerStartStopKeyboard = true;
+let timerStartStopSession = true;
 // timers intervals
 let intervalTimerStopMillisClick = 0;
 // keyboard's start
@@ -32,7 +35,7 @@ const statistics = new StatisticsCollector();
 // timers starters
 function startTimerClick(){
     msClick++;
-    if(msClick < 9){
+    if(msClick < 10){
         milliElementClick.innerText = '0' + msClick;
     } else {
         milliElementClick.innerText = msClick;
@@ -43,7 +46,7 @@ function startTimerClick(){
 }
 function startTimerOnButton(){
     msOnButton++;
-    if(msOnButton < 9){
+    if(msOnButton < 10){
         milliElementOnButton.innerText = '0' + msOnButton;
     } else {
         milliElementOnButton.innerText = msOnButton;
@@ -54,7 +57,7 @@ function startTimerOnButton(){
 }
 function startTimerKeyboard() {
     msOnKeyboard++;
-    if (msOnKeyboard < 9) {
+    if (msOnKeyboard < 10) {
         milliElementKeyboard.innerText = '0' + msOnKeyboard;
     } else {
         milliElementKeyboard.innerText = msOnKeyboard;
@@ -71,10 +74,22 @@ function startTimerKeyboard() {
 }
 function startTimerClickDistance() {
     msClickDistance++;
-    if (msClickDistance < 9) {
+    if (msClickDistance < 10) {
         milliElementClickDistance.innerText = '0' + msClickDistance;
     } else {
         milliElementClickDistance.innerText = msClickDistance;
+    }
+}
+function startTimerSession() {
+    secSession++;
+    if (secSession < 10) {
+        secondElementSession.innerText = '0' + secSession;
+    } else {
+        secondElementSession.innerText = secSession;
+    }
+    if (secSession === 15) {
+        stopTimerSession(intervalSession);
+        timerStartStopSession = true;
     }
 }
 
@@ -95,9 +110,18 @@ function stopTimerKeyboard(interval){
     milliElementKeyboard.innerText = '00';
     statistics.displayStatistics();
 }
-
+function stopTimerSession(interval) {
+    clearInterval(interval);
+    secSession = 0;
+    secondElementSession.innerText = '00';
+    statistics.refreshSession();
+}
 // handler's functions
 function handleMouseEnter(){
+    if (timerStartStopSession) {
+        intervalSession = setInterval(startTimerSession, 1000);
+        timerStartStopSession = false;
+    }
     if (timerStartStopOnButton){
         intervalOnButton = setInterval(startTimerOnButton, 10);
         timerStartStopOnButton = false;
@@ -111,6 +135,10 @@ function handleMouseLeave(){
     stopTimerOnButton(intervalOnButton);
 }
 function handleMouseClick(){
+    if (timerStartStopSession) {
+        intervalSession = setInterval(startTimerSession, 1000);
+        timerStartStopSession = false;
+    }
     timerStartStopClick = !timerStartStopClick;
     statistics.incrementClicks();
     if (timerStartStopClick) {
@@ -128,6 +156,10 @@ function handleMouseClick(){
 
 // keyboard taps handler
 document.onkeydown = function (){
+    if (timerStartStopSession) {
+        intervalSession = setInterval(startTimerSession, 1000);
+        timerStartStopSession = false;
+    }
     if (timerStartStopKeyboard) {
         msOnKeyboard = 0;
         keyboardStartTaps = statistics.getCountTapsOnKeys();
@@ -139,6 +171,10 @@ document.onkeydown = function (){
 
 // click coordinates handler
 document.addEventListener('click', (event) => {
+    if (timerStartStopSession) {
+        intervalSession = setInterval(startTimerSession, 1000);
+        timerStartStopSession = false;
+    }
     if (timerStartStopClickDistance) {
         firstClickX = event.pageX;
         firstClickY = event.pageY;
