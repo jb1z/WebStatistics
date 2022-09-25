@@ -51,7 +51,7 @@ body {
     left: 550px;
 }
 
-.report {
+.sessions {
     font-family: "Calisto MT", ui-monospace;
     font-weight: bold;
     position: absolute;
@@ -59,11 +59,10 @@ body {
     left: 400px;
 }
 
-#reportBotHuman {
+#behaviorSessions {
     position: absolute;
     top: 0;
     left: 150px;
-    color: red;
 }
 
 .buttons {

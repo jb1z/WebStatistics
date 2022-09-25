@@ -23,7 +23,7 @@ let timerStartStopClick = false;
 let timerStartStopClickDistance = true;
 let timerStartStopOnButton = true;
 let timerStartStopKeyboard = true;
-let timerStartStopSession = false;
+let timerStartStopSession = true;
 // timers intervals
 let intervalTimerStopMillisClick = 0;
 // keyboard's start
@@ -89,6 +89,7 @@ function startTimerSession() {
     }
     if (secSession === 15) {
         stopTimerSession(intervalSession);
+        timerStartStopSession = true;
     }
 }
 
@@ -110,10 +111,17 @@ function stopTimerKeyboard(interval){
     statistics.displayStatistics();
 }
 function stopTimerSession(interval) {
+    clearInterval(interval);
+    secSession = 0;
+    secondElementSession.innerText = '00';
     statistics.refreshSession();
 }
 // handler's functions
 function handleMouseEnter(){
+    if (timerStartStopSession) {
+        intervalSession = setInterval(startTimerSession, 1000);
+        timerStartStopSession = false;
+    }
     if (timerStartStopOnButton){
         intervalOnButton = setInterval(startTimerOnButton, 10);
         timerStartStopOnButton = false;
@@ -127,6 +135,10 @@ function handleMouseLeave(){
     stopTimerOnButton(intervalOnButton);
 }
 function handleMouseClick(){
+    if (timerStartStopSession) {
+        intervalSession = setInterval(startTimerSession, 1000);
+        timerStartStopSession = false;
+    }
     timerStartStopClick = !timerStartStopClick;
     statistics.incrementClicks();
     if (timerStartStopClick) {
@@ -144,6 +156,10 @@ function handleMouseClick(){
 
 // keyboard taps handler
 document.onkeydown = function (){
+    if (timerStartStopSession) {
+        intervalSession = setInterval(startTimerSession, 1000);
+        timerStartStopSession = false;
+    }
     if (timerStartStopKeyboard) {
         msOnKeyboard = 0;
         keyboardStartTaps = statistics.getCountTapsOnKeys();
@@ -155,6 +171,10 @@ document.onkeydown = function (){
 
 // click coordinates handler
 document.addEventListener('click', (event) => {
+    if (timerStartStopSession) {
+        intervalSession = setInterval(startTimerSession, 1000);
+        timerStartStopSession = false;
+    }
     if (timerStartStopClickDistance) {
         firstClickX = event.pageX;
         firstClickY = event.pageY;

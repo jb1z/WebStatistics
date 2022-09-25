@@ -2,14 +2,16 @@
 const behaviorClicksElement = document.querySelector('#behaviourClick');
 const behaviorOnButtonElement = document.querySelector('#behaviourOnButton');
 const behaviorKeyboardElement = document.querySelector('#behaviourKeyboard');
+const behaviorSessionsElement = document.querySelector('#behaviorSessions');
+const behaviorSessionCountElement = document.querySelector('#behaviorSessionsCount');
 // behavior enumeration
-const Behaviour = {BOT: 'bot', HUMAN: 'human', SUSPICIOUS: 'suspicious behavior'};
+const Behaviour = {BOT: 'bot', HUMAN: 'human', SUSPICIOUS: 'suspicious behavior', UNDEFINED: 'undefined'};
 // Class for defining behavior based on different types of stats
 class behaviourDefiner {
     #botPoints = 0;
     #humanPoints = 0;
     #suspiciousPoints = 0;
-    #definer = Behaviour.SUSPICIOUS;
+    #definer = Behaviour.UNDEFINED;
 
     incrementBotPoints() {
         this.#botPoints++;
@@ -71,6 +73,10 @@ class StatisticsCollector{
     #definerClicks = new behaviourDefiner();
     #definerOnButton = new behaviourDefiner();
     #definerKeyboard = new behaviourDefiner();
+    #definerIndex = new behaviourDefiner();
+    #definerSessions = new behaviourDefiner();
+    // count sessions
+    #countSessions = 0;
 
     #stats = document.querySelector('#stats');
 
@@ -143,7 +149,6 @@ class StatisticsCollector{
         } else {
             this.#definerOnButton.incrementHumanPoints();
         }
-        console.log(Math.abs((this.#avgMouseOnButtonTime / 10) - this.#minMouseOnButtonTime));
         statistics.displayStatistics();
     }
     takeTapsPerSecondKeyboard(tapsPerSecond) {
@@ -167,7 +172,6 @@ class StatisticsCollector{
         let distance;
         let indexTimeDistance;
         distance = Math.sqrt(Math.pow(Math.abs(x_1 - x_2),2) + Math.pow(Math.abs(y_1 - y_2),2));
-        console.log(timeInterval + ' ' + distance);
         if (distance === 0) {
             distance = 1;
         }
@@ -185,8 +189,31 @@ class StatisticsCollector{
         }
     }
 
-    refreshSession() {
+    #qualifyDefinerType(definer) {
+        if (definer === Behaviour.HUMAN) {
+            this.#definerSessions.incrementHumanPoints();
+            return;
+        }
+        if (definer === Behaviour.BOT) {
+            this.#definerSessions.incrementBotPoints();
+            return;
+        }
+        if (definer === Behaviour.SUSPICIOUS) {
+            this.#definerSessions.incrementSuspiciousPoints();
+        }
+    }
 
+    refreshSession() {
+        this.#qualifyDefinerType(this.#definerClicks.getDefiner());
+        this.#qualifyDefinerType(this.#definerIndex.getDefiner());
+        this.#qualifyDefinerType(this.#definerOnButton.getDefiner());
+        this.#qualifyDefinerType(this.#definerKeyboard.getDefiner());
+        // clear all!
+
+        // ---------
+        this.#countSessions++;
+        behaviorSessionCountElement.innerText = 'Sessions count: ' + this.#countSessions;
+        this.displayStatistics();
     }
 
     getCountTapsOnKeys() {
@@ -198,11 +225,14 @@ class StatisticsCollector{
         if (definer === Behaviour.BOT) {
             behaviorElement.style.color = '#DE2700';
         }
-        if (definer === Behaviour.SUSPICIOUS){
+        if (definer === Behaviour.SUSPICIOUS) {
             behaviorElement.style.color = '#FFC103';
         }
-        if (definer === Behaviour.HUMAN){
+        if (definer === Behaviour.HUMAN) {
             behaviorElement.style.color = '#42D000';
+        }
+        if (definer === Behaviour.UNDEFINED) {
+            behaviorElement.style.color = '#9400D3'
         }
     }
 
@@ -210,6 +240,7 @@ class StatisticsCollector{
         this.#setBehaviorTextColor(behaviorClicksElement, this.#definerClicks.getDefiner());
         this.#setBehaviorTextColor(behaviorOnButtonElement, this.#definerOnButton.getDefiner());
         this.#setBehaviorTextColor(behaviorKeyboardElement, this.#definerKeyboard.getDefiner());
+        this.#setBehaviorTextColor(behaviorSessionsElement, this.#definerSessions.getDefiner());
         this.#stats.innerText = 'Click button statistics:\n' +
             'Average time between two clicks: ' + this.#avgButtonClickTime.toFixed(2) + '\n' +
             'Max. time between two clicks: ' + this.#maxButtonClickTime + '\n' +
